@@ -1,0 +1,1 @@
+target_sources(chess PRIVATE src/logger/logger.cpp)
