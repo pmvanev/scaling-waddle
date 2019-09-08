@@ -1,8 +1,8 @@
 #include "src/logger/logger.hpp"
-#include <boost/log/trivial.hpp>
 
 int main(int, char **) {
-  sw::logger::init();
+  SW_LOG_INIT(debug, "log.txt");
+  SW_LOG(info, "Starting.");
   // TODO: print banner
   // TODO: set up board
   bool keep_running = false;
@@ -18,6 +18,6 @@ int main(int, char **) {
     // TODO: check move for validity
     // TODO: if move is valid, execute
   }
-  SW_LOG(debug) << "debug message";
+  SW_LOG(info, "Exiting.");
   return 0;
 }
