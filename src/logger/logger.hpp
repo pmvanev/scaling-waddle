@@ -1,3 +1,6 @@
+#ifndef LOGGER_HPP
+#define LOGGER_HPP
+
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/log/attributes/mutable_constant.hpp>
 #include <boost/log/expressions.hpp>
@@ -43,5 +46,8 @@ ValueType set_get_attrib(const char *name, ValueType value) {
 extern src::severity_logger<logging::trivial::severity_level> lg;
 void init();
 std::string path_to_filename(std::string path);
-}
-}
+
+} // namespace logger
+} // namespace sw
+
+#endif // LOGGER_HPP

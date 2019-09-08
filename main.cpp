@@ -1,4 +1,4 @@
-#include "src/logger/logger.hpp"
+#include "logger/logger.hpp"
 #include <boost/log/trivial.hpp>
 
 int main(int, char **) {
