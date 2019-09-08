@@ -28,7 +28,7 @@ void init() {
                                              attrs::mutable_constant<int>(0));
 
   logging::add_file_log(
-      keywords::file_name = "sample.log",
+      keywords::file_name = "chess.log",
       keywords::format =
           (expr::stream << expr::format_date_time<boost::posix_time::ptime>(
                                "TimeStamp", "%Y-%m-%d_%H:%M:%S.%f")
