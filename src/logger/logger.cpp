@@ -13,13 +13,7 @@ namespace keywords = boost::log::keywords;
 namespace sw {
 namespace logger {
 
-template <typename ValueType>
-ValueType set_get_attrib(const char *name, ValueType value) {
-  auto attr = logging::attribute_cast<attrs::mutable_constant<ValueType>>(
-      logging::core::get()->get_thread_attributes()[name]);
-  attr.set(value);
-  return attr.get();
-}
+src::severity_logger<logging::trivial::severity_level> lg;
 
 // Convert file path to only the filename
 std::string path_to_filename(std::string path) {

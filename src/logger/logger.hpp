@@ -33,8 +33,14 @@ namespace sw {
 namespace logger {
 // Set attribute and return the new value
 template <typename ValueType>
-ValueType set_get_attrib(const char *name, ValueType value);
-src::severity_logger<logging::trivial::severity_level> lg;
+ValueType set_get_attrib(const char *name, ValueType value) {
+  auto attr = logging::attribute_cast<attrs::mutable_constant<ValueType>>(
+      logging::core::get()->get_thread_attributes()[name]);
+  attr.set(value);
+  return attr.get();
+}
+
+extern src::severity_logger<logging::trivial::severity_level> lg;
 void init();
 std::string path_to_filename(std::string path);
 }
