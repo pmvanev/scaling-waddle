@@ -2,6 +2,8 @@
 #define OBSERVABLE_HPP
 
 #include "observer.hpp"
+#include <memory>
+#include <vector>
 
 namespace sw {
 namespace observer {

@@ -4,9 +4,12 @@
 #include <stdexcept>
 
 namespace sw {
-namespace observer_exception {
-class NullObserverException : public std::runtime_error {};
+namespace observer {
+class NullObserverException : public std::runtime_error {
+public:
+  NullObserverException(const char *);
+};
 } // namespace observer_exception
 } // namespace sw
 
-#endif OBSERVER_EXCEPTION_H
+#endif // OBSERVER_EXCEPTION_H

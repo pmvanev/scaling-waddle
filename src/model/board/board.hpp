@@ -1,7 +1,7 @@
 #ifndef BOARD_HPP
 #define BOARD_HPP
 
-#include "board/space.hpp"
+#include "space.hpp"
 #include <strstream>
 
 namespace sw {
