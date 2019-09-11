@@ -1,4 +1,4 @@
-#include "board/board.hpp"
+#include "board.hpp"
 
 namespace sw {
 namespace board {
