@@ -14,7 +14,6 @@ struct Position {
 
 class Board {
 public:
-  std::stringstream toStringStream(); // TODO: overload <<
   std::shared_ptr<Piece> getPiece(Position position);
   void setPiece(Position position, std::shared_ptr<Piece> piece);
   bool clear(Position position);
