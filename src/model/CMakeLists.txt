@@ -1,3 +1,2 @@
-add_subdirectory(board)
-# add_subdirectory(move)
-# add_subdirectory(piece)
+target_sources(chess PRIVATE src/model/board/board.cpp)
+# target_sources(chess PRIVATE src/model/board/space.cpp)

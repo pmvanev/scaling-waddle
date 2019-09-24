@@ -1,5 +1,26 @@
+#include "terminal_view.hpp"
 
-std::stringstream toStringStream() {
+namespace sw {
+namespace view {
+
+void TerminalView::draw() {
+  drawBoard();
+  drawPrompt();
+}
+    
+void TerminalView::update() {
+
+}
+
+void TerminalView::drawPrompt() {
+
+}
+
+void TerminalView::drawBoard() {
+
+}
+
+std::stringstream TerminalView::toStringStream() {
   std::stringstream stream;
   // TODO: table header
   stream << "        1     2     3     4     5     6     7     8" << std::endl
@@ -28,3 +49,7 @@ std::stringstream toStringStream() {
 
   return stream;
 }
+
+} // namespace view
+} // namespace sw
+

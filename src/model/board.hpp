@@ -2,7 +2,7 @@
 #define BOARD_HPP
 
 #include "space.hpp"
-#include <strstream>
+#include "observable.hpp"
 
 namespace sw {
 namespace board {
@@ -12,7 +12,7 @@ struct Position {
   unsigned int col;
 }
 
-class Board {
+class Board :: public Model {
 public:
   std::shared_ptr<Piece> getPiece(Position position);
   void setPiece(Position position, std::shared_ptr<Piece> piece);

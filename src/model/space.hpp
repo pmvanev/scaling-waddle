@@ -4,6 +4,7 @@
 #include "piece/piece.h"
 
 namespace sw {
+namespace model {
 namespace board {
 
 class Space {
@@ -16,6 +17,7 @@ public:
   Space(Color color, const std::shared_ptr<Piece> piece = nullptr);
   void setPiece(const std::shared_ptr<Piece> piece);
   std::shared_ptr<Piece> getPiece();
+  std::shared_ptr<Piece> removePiece();
   bool isEmpty();
 
 private:
@@ -23,7 +25,8 @@ private:
   std::shared_ptr<Piece> m_piece;
 }
 
-} // namespace sw
 } // namespace board
+} // namespace model
+} // namespace sw
 
 #endif
