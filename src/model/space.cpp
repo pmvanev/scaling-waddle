@@ -1,7 +1,7 @@
 #include "space.hpp"
 
 namespace sw {
-namespace board {
+namespace model {
 
 Space::Space(Color color, const std::shared_ptr<Piece> piece = nullptr)
     : m_color(color), m_piece(piece) {}
@@ -15,5 +15,5 @@ std::shared_ptr<Piece> Space::removePiece(){
     return piece;
 };
 
-} // namespace board
+} // namespace model
 } // namespace sw

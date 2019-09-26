@@ -3,16 +3,19 @@
 #define TERMINAL_VIEW_HPP
 
 #include "view.h"
+#include "model/board.h"
 
   std::stringstream toStringStream(); // TODO: overload <<
 
 namespace sw {
 namespace terminal {
 
-class TerminalView :: public View {
+class TerminalView : public View {
 public:
   void draw() override;
   void update() override;
+private:
+  std::shared_ptr<board::Board> m_board;
 };
 
 } // namespace view

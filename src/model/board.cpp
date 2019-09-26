@@ -1,7 +1,7 @@
 #include "board.hpp"
 
 namespace sw {
-namespace board {
+namespace model {
 
 std::shared_ptr<Piece> Board::getPiece(Position position) {
   return getSpace(position).getPiece();
@@ -24,5 +24,5 @@ Space &getSpace(Position position) {
   return m_spaces.at(position.row).at(position.col);
 }
 
-} // namespace board
+} // namespace model
 } // namespace sw

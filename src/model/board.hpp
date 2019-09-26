@@ -5,7 +5,7 @@
 #include "observable.hpp"
 
 namespace sw {
-namespace board {
+namespace model {
 
 struct Position {
   unsigned int row;
@@ -23,7 +23,7 @@ private:
   std::array<std::array<Space, 8>, 8> m_spaces;
 }
 
-} // namespace board
+} // namespace model
 } // namespace sw
 
 #endif

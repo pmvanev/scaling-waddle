@@ -5,7 +5,6 @@
 
 namespace sw {
 namespace model {
-namespace board {
 
 class Space {
 public:
@@ -25,7 +24,6 @@ private:
   std::shared_ptr<Piece> m_piece;
 }
 
-} // namespace board
 } // namespace model
 } // namespace sw
 
