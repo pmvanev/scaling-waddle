@@ -7,12 +7,12 @@
 namespace sw {
 namespace model {
 
-struct Position {
-  unsigned int row;
-  unsigned int col;
-}
+class Board : public Model {
+  struct Position {
+    unsigned int row;
+    unsigned int col;
+  };
 
-class Board :: public Model {
 public:
   std::shared_ptr<Piece> getPiece(Position position);
   void setPiece(Position position, std::shared_ptr<Piece> piece);
