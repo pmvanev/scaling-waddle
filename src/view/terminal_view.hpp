@@ -2,8 +2,8 @@
 #ifndef TERMINAL_VIEW_HPP
 #define TERMINAL_VIEW_HPP
 
-#include "view.h"
-#include "model/board.h"
+#include "view.hpp"
+#include "model/board.hpp"
 
   std::stringstream toStringStream(); // TODO: overload <<
 
@@ -14,8 +14,9 @@ class TerminalView : public View {
 public:
   void draw() override;
   void update() override;
+  TerminalView(std::shared_ptr<model::Board> board);
 private:
-  std::shared_ptr<board::Board> m_board;
+  std::shared_ptr<model::Board> m_board;
 };
 
 } // namespace view

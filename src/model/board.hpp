@@ -7,10 +7,11 @@
 namespace sw {
 namespace model {
 
-class Board : public Model {
+class Board : public Observable {
   struct Position {
-    unsigned int row;
-    unsigned int col;
+    Position(unsigned row, unsigned col);
+    unsigned row;
+    unsigned col;
   };
 
 public:
@@ -21,6 +22,7 @@ public:
 private:
   Space &getSpace(Position position);
   std::array<std::array<Space, 8>, 8> m_spaces;
+  std::vector<
 }
 
 } // namespace model

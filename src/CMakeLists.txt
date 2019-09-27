@@ -2,4 +2,4 @@
 add_subdirectory(logger)
 add_subdirectory(model)
 add_subdirectory(observer)
-# add_subdirectory(view)
+add_subdirectory(view)

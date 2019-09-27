@@ -9,7 +9,7 @@ void TerminalView::draw() {
 }
     
 void TerminalView::update() {
-
+  m_
 }
 
 void TerminalView::drawPrompt() {

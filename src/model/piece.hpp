@@ -21,7 +21,7 @@ enum class Type {
 public:
     Color getColor() {return m_color;}
     Type getType() {return m_type;}
-    virtual bool canMoveTo(Board::Position position) = 0;
+    // virtual bool canMoveTo(Board::Position position) = 0; // TODO:
 
 private:
     Color m_color;

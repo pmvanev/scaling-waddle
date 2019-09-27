@@ -26,4 +26,3 @@ if(Boost_FOUND)
 endif()
 
 add_subdirectory(src)
-include_directories("${CMAKE_SOURCE_DIR}/src/logger")

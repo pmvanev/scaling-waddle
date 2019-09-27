@@ -3,7 +3,7 @@
 namespace sw {
 namespace model {
 
-std::shared_ptr<Piece> Board::getPiece(Position position) {
+std::shared_ptr<Piece> Board::getPiece(Board::Position position) {
   return getSpace(position).getPiece();
 }
 
@@ -20,8 +20,11 @@ bool Board::clear(Position position) {
   return true;
 }
 
-Space &getSpace(Position position) {
+Space& getSpace(Board::Position position) {
   return m_spaces.at(position.row).at(position.col);
+}
+
+Board::Position(unsigned row, unsigned col) : row(row), col(col) {
 }
 
 } // namespace model
