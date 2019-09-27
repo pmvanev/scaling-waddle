@@ -20,10 +20,13 @@ enum class Type {
 
 public:
     Color getColor() {return m_color;}
+    Board::Position getPosition() {return m_position;}
     Type getType() {return m_type;}
+    void setPosition(Board::Position position) {m_position = position;}
     // virtual bool canMoveTo(Board::Position position) = 0; // TODO:
 
 private:
+    Board::Position m_position;
     Color m_color;
     Type m_type;
 

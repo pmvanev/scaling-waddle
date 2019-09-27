@@ -9,13 +9,14 @@ namespace model {
 
 class Space {
 public:
-  Space(Color color, const std::shared_ptr<Piece> piece = nullptr);
+  Space(Board::Position postion, Color color, const std::shared_ptr<Piece> piece = nullptr);
   void setPiece(const std::shared_ptr<Piece> piece);
   std::shared_ptr<Piece> getPiece();
   std::shared_ptr<Piece> removePiece();
   bool isEmpty();
 
 private:
+  Board::Position m_position;
   Color m_color;
   std::shared_ptr<Piece> m_piece;
 }
