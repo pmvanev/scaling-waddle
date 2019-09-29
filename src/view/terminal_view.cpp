@@ -71,7 +71,9 @@ void TerminalView::drawPrompt() {
 }
 
 void TerminalView::drawBoard() {
-  
+  for (const auto& row : m_view) {
+    std::cout << row << std::endl;
+  }
 }
 
 std::stringstream TerminalView::toStringStream() {
