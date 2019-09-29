@@ -8,15 +8,30 @@
   std::stringstream toStringStream(); // TODO: overload <<
 
 namespace sw {
-namespace terminal {
+namespace view {
 
-class TerminalView : public View {
+class TerminalView {
+    PAWN,
+    ROOK,
+    KNIGHT,
+    BISHOP,
+    QUEEN,
+    KING
 public:
+  static std::map<model::Piece::Type, char> charMap = {
+    {PAWN, 'p'},
+    {ROOK, 'r'},
+    {KNIGHT, 'k'},
+    {BISHOP, 'b'},
+    {QUEEN, 'Q'},
+    {KING, 'K'}
+  };
+  TerminalView(std::shared_ptr<model::Board> board);
   void draw() override;
   void update() override;
-  TerminalView(std::shared_ptr<model::Board> board);
 private:
   std::shared_ptr<model::Board> m_board;
+  std::vector<std::string> m_view;
 };
 
 } // namespace view
