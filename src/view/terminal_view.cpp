@@ -39,7 +39,7 @@ TerminalView::TerminalView(std::shared_ptr<model::Board> board) : m_board(board)
     for(unsigned j = 0; j < 8; j++) {
       Board::Position boardPosition(i,j);
       Board::Position viewPosition = toViewPosition(boardPosition);
-      m_view[viewPosition.row][viewPosition.col] = toChar(m_board.getPiece(boardPostion));
+      m_view[viewPosition.row][viewPosition.col] = toChar(m_board->getPiece(boardPostion));
     }
   }
 }
@@ -60,14 +60,30 @@ void TerminalView::draw() {
   drawBoard();
   drawPrompt();
 }
-    
+
 void TerminalView::update() {
-  std::vector<Position> changes = m_board.getChanges();
+  // TODO: save cursor position?
+  std::vector<Position> changes = m_board->getChanges();
+  for (const auto& change : changes) {
+    Position viewPos = toViewPosition(change);
+    // Piece piece = m_board->getPiece(boardPosition);
+    // TODO: move cursor to view position
+    if (m_board->getSpace(boardPosition.isEmpty())) {
+      // TODO: print ' ' at cursor location
+    } else {
+      // TODO: print ansi color code for piece
+      // TODO: print piece character
+    }
+  }
+  // TODO: print ansi reset
+  // TODO: move cursor to saved position or prompt line
+  m_board->clearChanges();
 }
 
 void TerminalView::drawPrompt() {
   // TODO: track whos move it is
-  std::cout << "Enter Move: "
+  // TODO: move cursor to prompt line
+  // std::cout << "Enter Move: "
 }
 
 void TerminalView::drawBoard() {
@@ -76,36 +92,36 @@ void TerminalView::drawBoard() {
   }
 }
 
-std::stringstream TerminalView::toStringStream() {
-  std::stringstream stream;
-  // TODO: table header
-  stream << "        1     2     3     4     5     6     7     8" << std::endl
-         << "      _______________________________________________"
-         << std::endl;
-  const char rowLabels[] = "ABCDEFGH";
-  int r = 0;
-  for (const auto &row : m_spaces) { // TODO: numeric iteration?
-    // TODO: row header
-    stream << "     |     |     |     |     |     |     |     |     |"
-           << std::endl;
-    // TODO: row content
-    stream << "  " << rowLabel(r++) << "  |";
-    for (const auto &space : row) { // TODO: numeric iteration?
-      // TODO: ANSI colored pieces
-      stream << "  " << getPiece() << "  |"
-    }
-    // TODO: row footer
-    // TODO: ANSI colored footers
-    stream << "     |_____|_____|_____|_____|_____|_____|_____|_____|"
-           << std::endl;
-  }
-  // TODO: table footer
-  stream << std::endl;
-  stream << "        1     2     3     4     5     6     7     8" << std::endl;
+// std::stringstream TerminalView::toStringStream() {
+//   std::stringstream stream;
+//   // TODO: table header
+//   stream << "        1     2     3     4     5     6     7     8" << std::endl
+//          << "      _______________________________________________"
+//          << std::endl;
+//   const char rowLabels[] = "ABCDEFGH";
+//   int r = 0;
+//   for (const auto &row : m_spaces) { // TODO: numeric iteration?
+//     // TODO: row header
+//     stream << "     |     |     |     |     |     |     |     |     |"
+//            << std::endl;
+//     // TODO: row content
+//     stream << "  " << rowLabel(r++) << "  |";
+//     for (const auto &space : row) { // TODO: numeric iteration?
+//       // TODO: ANSI colored pieces
+//       stream << "  " << getPiece() << "  |"
+//     }
+//     // TODO: row footer
+//     // TODO: ANSI colored footers
+//     stream << "     |_____|_____|_____|_____|_____|_____|_____|_____|"
+//            << std::endl;
+//   }
+//   // TODO: table footer
+//   stream << std::endl;
+//   stream << "        1     2     3     4     5     6     7     8" << std::endl;
 
-  return stream;
-}
+//   return stream;
+// }
 
-} // namespace view
-} // namespace sw
+// } // namespace view
+// } // namespace sw
 
