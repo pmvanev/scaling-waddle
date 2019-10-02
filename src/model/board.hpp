@@ -19,6 +19,7 @@ public:
   void setPiece(Position position, std::shared_ptr<Piece> piece);
   bool clear(Position position);
   std::vector<Position> getChanges(); 
+  void Board::clearChanges();
   void updateObservers() override;
   std::shared_ptr<Piece> removePiece(Position position);
 

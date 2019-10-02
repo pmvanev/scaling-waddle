@@ -37,6 +37,10 @@ std::vector<Board::Position> Board::getChanges() {
   return m_changes;
 }
 
+void Board::clearChanges() {
+  m_changes.clear();
+}
+
 void Board::updateObservers() {
   Observable::updateObservers();
   m_changes.clear();
