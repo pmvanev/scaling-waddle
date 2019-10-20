@@ -3,7 +3,7 @@
 namespace sw {
 namespace model {
 
-Space::Space(Board::Position position, Color color, const std::shared_ptr<Piece> piece = nullptr)
+Space::Space(Position position, Color color, const std::shared_ptr<Piece> piece)
     : m_position(position), m_color(color), m_piece(piece) {
         if(!isEmpty()) {
             m_piece->setPosition(m_position);

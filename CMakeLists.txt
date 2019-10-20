@@ -11,7 +11,7 @@ set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
 
-set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_CXX_STANDARD 20)
 
 # Boost stuff
 set(Boost_USE_STATIC_LIBS ON) 
@@ -26,3 +26,4 @@ if(Boost_FOUND)
 endif()
 
 add_subdirectory(src)
+include_directories(src) 

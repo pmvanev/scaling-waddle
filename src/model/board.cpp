@@ -1,25 +1,26 @@
 #include "board.hpp"
+#include "simple_types.hpp"
 
 namespace sw {
 namespace model {
 
-std::shared_ptr<Piece> Board::getPiece(Board::Position position) {
+std::shared_ptr<Piece> Board::getPiece(Position position) {
   return getSpace(position).getPiece();
 }
 
-void Board::setPiece(Board::Position position, std::shared_ptr<Piece> piece) {
+void Board::setPiece(Position position, std::shared_ptr<Piece> piece) {
   getSpace(position).setPiece(piece);
   m_changes.push_back(position);
 }
 
-std::shared_ptr<Piece> Board::removePiece(Board::Position position) {
+std::shared_ptr<Piece> Board::removePiece(Position position) {
   if (!getSpace(position).isEmpty()) {
     m_changes.push_back(position);
   }
   return getSpace(position).removePiece();
 }
 
-bool Board::clear(Board::Position position) {
+bool Board::clear(Position position) {
   Space &space = getSpace(position);
   if (space.isEmpty()) {
     return false;
@@ -29,11 +30,11 @@ bool Board::clear(Board::Position position) {
   return true;
 }
 
-Space& Board::getSpace(Board::Position position) {
+Space& Board::getSpace(Position position) {
   return m_spaces.at(position.row).at(position.col);
 }
 
-std::vector<Board::Position> Board::getChanges() {
+std::vector<Position> Board::getChanges() {
   return m_changes;
 }
 
@@ -44,9 +45,6 @@ void Board::clearChanges() {
 void Board::updateObservers() {
   Observable::updateObservers();
   m_changes.clear();
-}
-
-Board::Position(unsigned row, unsigned col) : row(row), col(col) {
 }
 
 } // namespace model
