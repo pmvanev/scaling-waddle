@@ -10,7 +10,7 @@ namespace observer {
 
 class Observable {
 public:
-  virtual ~Observable();
+  virtual ~Observable(){};
   virtual void updateObservers(void);
   void addObserver(std::shared_ptr<Observer> observer);
   bool removeObserver(std::shared_ptr<Observer> observer);

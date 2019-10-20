@@ -7,7 +7,7 @@ namespace sw {
 namespace observer {
 class NullObserverException : public std::runtime_error {
 public:
-  NullObserverException(const char *);
+  NullObserverException(const char* msg) : std::runtime_error(msg){};
 };
 } // namespace observer_exception
 } // namespace sw
