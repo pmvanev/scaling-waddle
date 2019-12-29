@@ -30,17 +30,13 @@ bool Board::clear(Position position) {
   return true;
 }
 
-Space& Board::getSpace(Position position) {
+Space &Board::getSpace(Position position) {
   return m_spaces.at(position.row).at(position.col);
 }
 
-std::vector<Position> Board::getChanges() {
-  return m_changes;
-}
+std::vector<Position> Board::getChanges() { return m_changes; }
 
-void Board::clearChanges() {
-  m_changes.clear();
-}
+void Board::clearChanges() { m_changes.clear(); }
 
 void Board::updateObservers() {
   Observable::updateObservers();

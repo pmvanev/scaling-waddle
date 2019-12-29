@@ -13,6 +13,10 @@ int main(int, char **) {
   // TODO: print banner
   // TODO: set up board
   std::shared_ptr<model::Board> board = std::make_shared<model::Board>();
+  board->setPiece(model::Position(0, 0),
+                  std::make_shared<model::Piece>(model::Position(0, 0),
+                                                 model::Color::BLACK,
+                                                 model::Piece::Type::ROOK));
   std::shared_ptr<view::TerminalView> view =
       std::make_shared<view::TerminalView>(board);
   view->draw();
