@@ -4,6 +4,8 @@
 #include <model/board.hpp>
 #include <view/terminal_view.hpp>
 
+#include <iostream>
+
 using namespace sw;
 
 int main(int, char **) {
@@ -11,7 +13,8 @@ int main(int, char **) {
   // TODO: print banner
   // TODO: set up board
   std::shared_ptr<model::Board> board = std::make_shared<model::Board>();
-  std::shared_ptr<view::TerminalView> view = std::make_shared<view::TerminalView>(board);
+  std::shared_ptr<view::TerminalView> view =
+      std::make_shared<view::TerminalView>(board);
   view->draw();
   bool keep_running = false;
   while (keep_running) {
