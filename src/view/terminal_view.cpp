@@ -11,77 +11,22 @@ std::map<model::Piece::Type, char> TerminalView::charMap = {
     {model::Piece::Type::KNIGHT, 'k'}, {model::Piece::Type::BISHOP, 'b'},
     {model::Piece::Type::QUEEN, 'Q'},  {model::Piece::Type::KING, 'K'}};
 
+const unsigned TerminalView::SPACE_HEIGHT = 3;
+const unsigned TerminalView::SPACE_WIDTH = 5;
+
 TerminalView::TerminalView(std::shared_ptr<model::Board> board)
     : m_board(board) {
-  m_view.reserve(30);
-  m_view.emplace_back(
-      "                                                           ");
-  m_view.emplace_back(
-      "        1     2     3     4     5     6     7     8        ");
-  m_view.emplace_back(
-      "      _______________________________________________      ");
-  m_view.emplace_back(
-      "     |     |     |     |     |     |     |     |     |     ");
-  m_view.emplace_back(
-      "  A  |     |     |     |     |     |     |     |     |  A  ");
-  m_view.emplace_back(
-      "     |_____|_____|_____|_____|_____|_____|_____|_____|     ");
-  m_view.emplace_back(
-      "     |     |     |     |     |     |     |     |     |     ");
-  m_view.emplace_back(
-      "  B  |     |     |     |     |     |     |     |     |  B  ");
-  m_view.emplace_back(
-      "     |_____|_____|_____|_____|_____|_____|_____|_____|     ");
-  m_view.emplace_back(
-      "     |     |     |     |     |     |     |     |     |     ");
-  m_view.emplace_back(
-      "  C  |     |     |     |     |     |     |     |     |  C  ");
-  m_view.emplace_back(
-      "     |_____|_____|_____|_____|_____|_____|_____|_____|     ");
-  m_view.emplace_back(
-      "     |     |     |     |     |     |     |     |     |     ");
-  m_view.emplace_back(
-      "  D  |     |     |     |     |     |     |     |     |  D  ");
-  m_view.emplace_back(
-      "     |_____|_____|_____|_____|_____|_____|_____|_____|     ");
-  m_view.emplace_back(
-      "     |     |     |     |     |     |     |     |     |     ");
-  m_view.emplace_back(
-      "  E  |     |     |     |     |     |     |     |     |  E  ");
-  m_view.emplace_back(
-      "     |_____|_____|_____|_____|_____|_____|_____|_____|     ");
-  m_view.emplace_back(
-      "     |     |     |     |     |     |     |     |     |     ");
-  m_view.emplace_back(
-      "  F  |     |     |     |     |     |     |     |     |  F  ");
-  m_view.emplace_back(
-      "     |_____|_____|_____|_____|_____|_____|_____|_____|     ");
-  m_view.emplace_back(
-      "     |     |     |     |     |     |     |     |     |     ");
-  m_view.emplace_back(
-      "  G  |     |     |     |     |     |     |     |     |  G  ");
-  m_view.emplace_back(
-      "     |_____|_____|_____|_____|_____|_____|_____|_____|     ");
-  m_view.emplace_back(
-      "     |     |     |     |     |     |     |     |     |     ");
-  m_view.emplace_back(
-      "  H  |     |     |     |     |     |     |     |     |  H  ");
-  m_view.emplace_back(
-      "     |_____|_____|_____|_____|_____|_____|_____|_____|     ");
-  m_view.emplace_back(
-      "                                                           ");
-  m_view.emplace_back(
-      "        1     2     3     4     5     6     7     8        ");
-  m_view.emplace_back(
-      "                                                           ");
-  for (unsigned i = 0; i < 8; i++) {
-    for (unsigned j = 0; j < 8; j++) {
-      model::Position boardPosition(i, j);
-      model::Position viewPosition = toViewPosition(boardPosition);
-      m_view[viewPosition.row][viewPosition.col] =
-          toChar(m_board->getPiece(boardPosition));
+  // TODO: border
+  initscr();
+  for (unsigned x = 1; x < 9; x++) {
+    for (unsigned y = 1; y < 9; y++) {
+      m_view[x][y] = newwin(SPACE_HEIGHT, SPACE_WIDTH, (SPACE_HEIGHT - 1) * y,
+                            (SPACE_WIDTH - 1) * x);
+      box(m_view[x][y], 0, 0);
+      //   wrefresh(m_view[x][y]);
     }
   }
+  //   refresh();
 }
 
 char TerminalView::toChar(std::shared_ptr<model::Piece> piece) {
@@ -118,6 +63,7 @@ void TerminalView::update() {
   // TODO: print ansi reset
   // TODO: move cursor to saved position or prompt line
   m_board->clearChanges();
+  refresh(); // TODO: need this?
 }
 
 void TerminalView::drawPrompt() {
@@ -127,9 +73,25 @@ void TerminalView::drawPrompt() {
 }
 
 void TerminalView::drawBoard() {
-  for (const auto &row : m_view) {
-    std::cout << row << std::endl;
+  for (unsigned x = 1; x < 9; x++) {
+    for (unsigned y = 1; y < 9; y++) {
+      wrefresh(m_view[x][y]);
+    }
   }
+  //   refresh();
+}
+
+TerminalView::~TerminalView() {
+  for (unsigned x = 1; x < 9; x++) {
+    for (unsigned y = 1; y < 9; y++) {
+      // clear borders
+      wborder(m_view[x][y], ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+      // TODO: clear colors
+      // deallocate window
+      delwin(m_view[x][y]);
+    }
+  }
+  endwin();
 }
 
 } // namespace view

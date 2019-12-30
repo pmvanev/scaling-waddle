@@ -18,12 +18,17 @@ set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED OFF)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
 find_package(Boost 1.45.0 COMPONENTS log REQUIRED) 
+include_directories(${Boost_INCLUDE_DIRS}) 
 
-if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS}) 
-    add_executable(chess main.cpp) 
-    target_link_libraries(chess ${Boost_LIBRARIES})
-endif()
+# Curses stuff
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
 
+# main executable
+add_executable(chess main.cpp) 
+target_link_libraries(chess ${Boost_LIBRARIES} ${CURSES_LIBRARIES})
+
+# sw stuff
 add_subdirectory(src)
 include_directories(src) 
+

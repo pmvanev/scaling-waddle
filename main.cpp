@@ -20,6 +20,7 @@ int main(int, char **) {
   std::shared_ptr<view::TerminalView> view =
       std::make_shared<view::TerminalView>(board);
   view->draw();
+  sleep(3);
   bool keep_running = false;
   while (keep_running) {
     // TODO: display board
