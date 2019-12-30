@@ -23,6 +23,8 @@ TerminalView::TerminalView(std::shared_ptr<model::Board> board)
       m_view[x][y] = newwin(SPACE_HEIGHT, SPACE_WIDTH, (SPACE_HEIGHT - 1) * y,
                             (SPACE_WIDTH - 1) * x);
       box(m_view[x][y], 0, 0);
+      mvwaddch(m_view[x][y], SPACE_HEIGHT / 2, SPACE_WIDTH / 2,
+               toChar(m_board->getPiece(model::Position(x - 1, y - 1))));
       //   wrefresh(m_view[x][y]);
     }
   }
