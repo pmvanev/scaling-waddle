@@ -1,7 +1,7 @@
 #include "terminal_view.hpp"
 #include "model/simple_types.hpp"
 
-#include <iostream>
+#include <iostream> // TODO: remove
 
 namespace sw {
 namespace view {
@@ -11,10 +11,10 @@ std::map<model::Piece::Type, char> TerminalView::pieceCharMap = {
     {model::Piece::Type::KNIGHT, 'k'}, {model::Piece::Type::BISHOP, 'b'},
     {model::Piece::Type::QUEEN, 'Q'},  {model::Piece::Type::KING, 'K'}};
 
-std::map<model::Color, bg_color_t> TerminalView::spaceColorMap = {
+std::map<model::Color, color_t> TerminalView::spaceColorMap = {
     {model::Color::BLACK, COLOR_CYAN}, {model::Color::WHITE, COLOR_BLACK}};
 
-std::map<model::Color, fg_color_t> TerminalView::pieceColorMap = {
+std::map<model::Color, color_t> TerminalView::pieceColorMap = {
     {model::Color::BLACK, COLOR_BLUE}, {model::Color::WHITE, COLOR_WHITE}};
 
 const unsigned TerminalView::SPACE_HEIGHT = 3;
@@ -23,8 +23,31 @@ const unsigned TerminalView::SPACE_WIDTH = 5;
 TerminalView::TerminalView(std::shared_ptr<model::Board> board)
     : m_board(board) {
   initscr();
+  initColor();
   initBorder();
   initSpaces();
+}
+
+void TerminalView::initColor() {
+  if (has_colors() == FALSE) {
+    throw std::runtime_error("Terminal does not support colors.");
+  }
+  start_color();
+  unsigned color_pair = 0;
+  for (const auto &space_color : spaceColorMap) {
+    for (const auto &piece_color : pieceColorMap) {
+      // piece on space
+      init_pair(color_pair, piece_color.second, space_color.second);
+      m_colorPairMap.emplace(
+          std::make_pair(piece_color.second, space_color.second), color_pair);
+      color_pair++;
+    }
+    // empty space
+    init_pair(color_pair, space_color.second, space_color.second);
+    m_colorPairMap.emplace(
+        std::make_pair(space_color.second, space_color.second), color_pair);
+    color_pair++;
+  }
 }
 
 void TerminalView::initBorder() {
@@ -103,17 +126,19 @@ void TerminalView::drawPrompt() {
 void TerminalView::drawBoard() {
   for (unsigned row = 0; row < 10; row++) {
     for (unsigned col = 0; col < 10; col++) {
-      m_view[row][col]->refresh();
+      m_view[row][col]->refresh(m_colorPairMap);
     }
   }
 }
 
 Window::Window(unsigned height, unsigned width, model::Position position,
-               bg_color_t bgColor)
-    : m_height(height), m_width(width), m_bgColor(bgColor), m_char(' ') {
-  // m_window = newwin(height, width, (height - 1) * position.row,
-  //                   (width - 1) * position.col);
-  m_window = newwin(height, width, height * position.row, width * position.col);
+               color_t bgColor)
+    : m_height(height), m_width(width), m_colorPair(bgColor, bgColor),
+      m_char(' ') {
+  m_window = newwin(height, width, (height - 1) * position.row,
+                    (width - 1) * position.col);
+  // m_window = newwin(height, width, height * position.row, width *
+  // position.col);
 }
 
 void Window::box() {
@@ -126,15 +151,20 @@ void Window::unBox() {
   wborder(m_window, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
 }
 
-void Window::setChar(char character, fg_color_t fgColor = COLOR_BLACK) {
+void Window::setChar(char character, color_t fgColor = COLOR_BLACK) {
   m_char = character;
-  m_fgColor = fgColor;
+  m_colorPair.first = fgColor;
   mvwaddch(m_window, m_height / 2, m_width / 2, character);
 }
 
 void Window::clear() { setChar(' '); }
 
-void Window::refresh() { wrefresh(m_window); }
+void Window::refresh(
+    const std::map<std::pair<color_t, color_t>, color_t> &colorPairMap) {
+  wbkgd(m_window,
+        colorPairMap.at(std::make_pair(m_colorPair.first, m_colorPair.second)));
+  wrefresh(m_window);
+}
 
 Window::~Window() {
   // clear borders
