@@ -34,6 +34,10 @@ Space &Board::getSpace(Position position) {
   return m_spaces.at(position.row).at(position.col);
 }
 
+Color Board::getColor(Position position) {
+  return getSpace(position).getColor();
+}
+
 std::vector<Position> Board::getChanges() { return m_changes; }
 
 void Board::clearChanges() { m_changes.clear(); }

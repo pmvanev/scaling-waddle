@@ -14,13 +14,10 @@ public:
   Piece(Position position, Color color, Type type);
 
   Color getColor() { return m_color; }
-  Position getPosition() { return m_position; }
   Type getType() { return m_type; }
-  void setPosition(Position position) { m_position = position; }
   // virtual bool canMoveTo(Board::Position position) = 0; // TODO:
 
 private:
-  Position m_position;
   Color m_color;
   Type m_type;
 };

@@ -1,10 +1,10 @@
 #ifndef BOARD_HPP
 #define BOARD_HPP
 
-#include "space.hpp"
+#include "observer/observable.hpp"
 #include "piece.hpp"
 #include "simple_types.hpp"
-#include "observer/observable.hpp"
+#include "space.hpp"
 
 namespace sw {
 namespace model {
@@ -14,13 +14,14 @@ public:
   std::shared_ptr<Piece> getPiece(Position position);
   void setPiece(Position position, std::shared_ptr<Piece> piece);
   bool clear(Position position);
-  std::vector<Position> getChanges(); 
+  std::vector<Position> getChanges();
   void clearChanges();
   void updateObservers() override;
   std::shared_ptr<Piece> removePiece(Position position);
+  Color getColor(Position postion);
 
 private:
-  Space& getSpace(Position position);
+  Space &getSpace(Position position);
   std::array<std::array<Space, 8>, 8> m_spaces;
   std::vector<Position> m_changes;
 };

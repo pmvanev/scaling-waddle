@@ -6,46 +6,72 @@
 namespace sw {
 namespace view {
 
-std::map<model::Piece::Type, char> TerminalView::charMap = {
+std::map<model::Piece::Type, char> TerminalView::pieceCharMap = {
     {model::Piece::Type::PAWN, 'p'},   {model::Piece::Type::ROOK, 'r'},
     {model::Piece::Type::KNIGHT, 'k'}, {model::Piece::Type::BISHOP, 'b'},
     {model::Piece::Type::QUEEN, 'Q'},  {model::Piece::Type::KING, 'K'}};
+
+std::map<model::Color, bg_color_t> TerminalView::spaceColorMap = {
+    {model::Color::BLACK, COLOR_CYAN}, {model::Color::WHITE, COLOR_BLACK}};
+
+std::map<model::Color, fg_color_t> TerminalView::pieceColorMap = {
+    {model::Color::BLACK, COLOR_BLUE}, {model::Color::WHITE, COLOR_WHITE}};
 
 const unsigned TerminalView::SPACE_HEIGHT = 3;
 const unsigned TerminalView::SPACE_WIDTH = 5;
 
 TerminalView::TerminalView(std::shared_ptr<model::Board> board)
     : m_board(board) {
-  // TODO: border
   initscr();
-  for (unsigned x = 1; x < 9; x++) {
-    for (unsigned y = 1; y < 9; y++) {
-      m_view[x][y] = newwin(SPACE_HEIGHT, SPACE_WIDTH, (SPACE_HEIGHT - 1) * y,
-                            (SPACE_WIDTH - 1) * x);
-      box(m_view[x][y], 0, 0);
-      mvwaddch(m_view[x][y], SPACE_HEIGHT / 2, SPACE_WIDTH / 2,
-               toChar(m_board->getPiece(model::Position(x - 1, y - 1))));
-      //   wrefresh(m_view[x][y]);
+  initBorder();
+  initSpaces();
+}
+
+void TerminalView::initBorder() {
+  std::string colLabels = " 12345678 ";
+  std::string rowLabels = " ABCDEFGH ";
+  for (unsigned col = 0; col < 10; col++) {
+    // TODO: would std::move be better here?
+    m_view[0][col] = std::make_shared<Window>(
+        SPACE_HEIGHT, SPACE_WIDTH, model::Position(0, col), COLOR_BLACK);
+    m_view[0][col]->setChar(colLabels[col], COLOR_WHITE);
+    m_view[9][col] = std::make_shared<Window>(
+        SPACE_HEIGHT, SPACE_WIDTH, model::Position(9, col), COLOR_BLACK);
+    m_view[9][col]->setChar(colLabels[col], COLOR_WHITE);
+  }
+  for (unsigned row = 1; row < 9; row++) {
+    m_view[row][0] = std::make_shared<Window>(
+        SPACE_HEIGHT, SPACE_WIDTH, model::Position(row, 0), COLOR_BLACK);
+    m_view[row][0]->setChar(rowLabels[row], COLOR_WHITE);
+    m_view[row][9] = std::make_shared<Window>(
+        SPACE_HEIGHT, SPACE_WIDTH, model::Position(row, 9), COLOR_BLACK);
+    m_view[row][9]->setChar(rowLabels[row], COLOR_WHITE);
+  }
+}
+
+void TerminalView::initSpaces() {
+  for (unsigned row = 1; row < 9; row++) {
+    for (unsigned col = 1; col < 9; col++) {
+      m_view[row][col] = std::make_shared<Window>(
+          SPACE_HEIGHT, SPACE_WIDTH, model::Position(row, col),
+          spaceColorMap[m_board->getColor(model::Position(row - 1, col - 1))]);
+      m_view[row][col]->box();
+      std::shared_ptr<model::Piece> piece =
+          m_board->getPiece(model::Position(row - 1, col - 1));
+      if (piece != nullptr) {
+        m_view[row][col]->setChar(pieceCharMap[piece->getType()],
+                                  pieceColorMap[piece->getColor()]);
+      }
     }
   }
-  //   refresh();
 }
 
-char TerminalView::toChar(std::shared_ptr<model::Piece> piece) {
-  if (piece == nullptr) {
-    return ' ';
-  }
-  return charMap[piece->getType()];
-}
-
-model::Position TerminalView::toViewPosition(model::Position boardPosition) {
-  return model::Position(4 + 3 * boardPosition.row, 8 + 6 * boardPosition.col);
-}
+TerminalView::~TerminalView() { endwin(); }
 
 void TerminalView::draw() {
   // TODO: stationary terminal mode
   drawBoard();
-  drawPrompt();
+  // drawPrompt();
 }
 
 void TerminalView::update() {
@@ -75,25 +101,49 @@ void TerminalView::drawPrompt() {
 }
 
 void TerminalView::drawBoard() {
-  for (unsigned x = 1; x < 9; x++) {
-    for (unsigned y = 1; y < 9; y++) {
-      wrefresh(m_view[x][y]);
+  for (unsigned row = 0; row < 10; row++) {
+    for (unsigned col = 0; col < 10; col++) {
+      m_view[row][col]->refresh();
     }
   }
-  //   refresh();
 }
 
-TerminalView::~TerminalView() {
-  for (unsigned x = 1; x < 9; x++) {
-    for (unsigned y = 1; y < 9; y++) {
-      // clear borders
-      wborder(m_view[x][y], ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-      // TODO: clear colors
-      // deallocate window
-      delwin(m_view[x][y]);
-    }
-  }
-  endwin();
+Window::Window(unsigned height, unsigned width, model::Position position,
+               bg_color_t bgColor)
+    : m_height(height), m_width(width), m_bgColor(bgColor), m_char(' ') {
+  // m_window = newwin(height, width, (height - 1) * position.row,
+  //                   (width - 1) * position.col);
+  m_window = newwin(height, width, height * position.row, width * position.col);
+}
+
+void Window::box() {
+  // wborder(m_window, '|', '|', '-', '-', '+', '+', '+', '+'); // TODO:
+  // better?
+  ::box(m_window, 0, 0);
+}
+
+void Window::unBox() {
+  wborder(m_window, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+}
+
+void Window::setChar(char character, fg_color_t fgColor = COLOR_BLACK) {
+  m_char = character;
+  m_fgColor = fgColor;
+  mvwaddch(m_window, m_height / 2, m_width / 2, character);
+}
+
+void Window::clear() { setChar(' '); }
+
+void Window::refresh() { wrefresh(m_window); }
+
+Window::~Window() {
+  // clear borders
+  unBox();
+  // TODO: clear colors
+  // clear char
+  clear();
+  // deallocate window
+  delwin(m_window);
 }
 
 } // namespace view
