@@ -11,7 +11,7 @@ class Piece {
 public:
   enum class Type { PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING };
 
-  Piece(Position position, Color color, Type type);
+  Piece(Color color, Type type);
 
   Color getColor() { return m_color; }
   Type getType() { return m_type; }

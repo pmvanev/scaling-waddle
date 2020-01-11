@@ -13,10 +13,7 @@ int main(int, char **) {
   SW_LOG(debug) << "Setting up Chess Board...";
   // TODO: set up board
   std::shared_ptr<model::Board> board = std::make_shared<model::Board>();
-  board->setPiece(model::Position(0, 0),
-                  std::make_shared<model::Piece>(model::Position(0, 0),
-                                                 model::Color::BLACK,
-                                                 model::Piece::Type::ROOK));
+  board->classicSetup();
   SW_LOG(debug) << "Constructing a terminal view...";
   std::shared_ptr<view::TerminalView> view =
       std::make_shared<view::TerminalView>(board);

@@ -19,6 +19,7 @@ public:
   void updateObservers() override;
   std::shared_ptr<Piece> removePiece(Position position);
   Color getColor(Position postion);
+  void classicSetup();
 
 private:
   Space &getSpace(Position position);

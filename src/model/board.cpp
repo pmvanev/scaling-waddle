@@ -4,6 +4,20 @@
 namespace sw {
 namespace model {
 
+void Board::classicSetup() {
+  // pawns
+  for (int col = 0; col < 8; col++) {
+    setPiece(Position(1, col),
+             std::make_shared<Piece>(Color::BLACK, Piece::Type::PAWN));
+    setPiece(Position(6, col),
+             std::make_shared<Piece>(Color::WHITE, Piece::Type::PAWN));
+  }
+  setPiece(Position(0, 0),
+           std::make_shared<Piece>(Color::BLACK, Piece::Type::ROOK));
+  setPiece(Position(0, 7),
+           std::make_shared<Piece>(Color::BLACK, Piece::Type::ROOK));
+}
+
 std::shared_ptr<Piece> Board::getPiece(Position position) {
   return getSpace(position).getPiece();
 }

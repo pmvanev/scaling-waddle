@@ -161,8 +161,11 @@ void Window::clear() { setChar(' '); }
 
 void Window::refresh(
     const std::map<std::pair<color_t, color_t>, color_t> &colorPairMap) {
-  wbkgd(m_window,
-        colorPairMap.at(std::make_pair(m_colorPair.first, m_colorPair.second)));
+  // TODO: fix colors
+  // wbkgd(m_window,
+  //       colorPairMap.at(std::make_pair(m_colorPair.first,
+  //       m_colorPair.second)));
+  // ::refresh();
   wrefresh(m_window);
 }
 
